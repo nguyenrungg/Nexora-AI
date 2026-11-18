@@ -1,0 +1,54 @@
+<!doctype html>
+<!--
+  NEXORA AI — OAuth redirect page for platforms that require a public HTTPS redirect URL
+  (e.g. Instagram API with Unified Login). Host it on a domain YOU control (GitHub Pages works).
+  It only shows the current address so you can paste it into NEXORA: no scripts are loaded from
+  anywhere else, nothing is sent or stored. The code in the address is useless without your app secret
+  and expires quickly, but do not share it.
+-->
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">
+<title>NEXORA AI — Đăng nhập xong</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: "Segoe UI", system-ui, sans-serif; background: #0e0f12; color: #ecedf1; margin: 0;
+         display: grid; place-items: center; min-height: 100vh; }
+  main { max-width: 720px; padding: 32px 16px; }
+  h1 { font-size: 22px; margin: 0 0 8px; }
+  p { color: #b7bac4; line-height: 1.5; }
+  textarea { width: 100%; min-height: 120px; box-sizing: border-box; background: #17181d; color: #ecedf1;
+             border: 1px solid #2c2e36; border-radius: 8px; padding: 12px; font: 13px/1.4 Consolas, monospace; }
+  button { margin-top: 12px; background: #7c5cff; color: #fff; border: 0; border-radius: 8px; padding: 10px 16px;
+           font-size: 14px; cursor: pointer; }
+  .warn { color: #ffb86b; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Đăng nhập xong — quay lại NEXORA AI</h1>
+  <p>Sao chép toàn bộ địa chỉ dưới đây và dán vào ô <b>“Địa chỉ trang trình duyệt chuyển tới sau khi đăng nhập”</b>
+     trong cửa sổ kết nối của NEXORA.</p>
+  <textarea id="url" readonly></textarea>
+  <button id="copy" type="button">Sao chép địa chỉ</button>
+  <p id="status"></p>
+  <p class="warn">Không chia sẻ địa chỉ này cho người khác. Trang này không gửi hay lưu bất kỳ dữ liệu nào.</p>
+</main>
+<script>
+  const box = document.getElementById("url");
+  box.value = window.location.href;
+  const status = document.getElementById("status");
+  if (!/[?&]code=/.test(window.location.search) && !/[?&]error=/.test(window.location.search)) {
+    status.textContent = "Địa chỉ này không có mã đăng nhập (code=). Hãy bắt đầu kết nối lại từ NEXORA.";
+  }
+  document.getElementById("copy").addEventListener("click", async () => {
+    box.select();
+    try { await navigator.clipboard.writeText(box.value); status.textContent = "Đã sao chép."; }
+    catch (e) { document.execCommand("copy"); status.textContent = "Đã chọn địa chỉ — nhấn Ctrl+C nếu chưa sao chép."; }
+  });
+</script>
+</body>
+</html>
